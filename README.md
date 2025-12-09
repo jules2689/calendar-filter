@@ -87,10 +87,33 @@ curl http://localhost:8080/health
 
 ## Configuration
 
-The Google Calendar URL is hardcoded in `main.go`. To change it, modify the `googleCalendarURL` constant:
+### Environment Variables
 
-```go
-const googleCalendarURL = "https://calendar.google.com/calendar/ical/YOUR_EMAIL/public/basic.ics"
+- `CALENDAR_URL`: **Required** - The iCal URL to proxy
+- `PORT`: The port to run the server on (defaults to 8080)
+
+Example:
+```bash
+export CALENDAR_URL="https://calendar.google.com/calendar/ical/YOUR_EMAIL/public/basic.ics"
+export PORT=3000
+go run main.go
+```
+
+**Note:** The service will fail to start if `CALENDAR_URL` is not set.
+
+### Docker
+
+Build and run with Docker:
+
+```bash
+# Build the image
+docker build -t cal-filter .
+
+# Run with required calendar URL
+docker run -p 8080:8080 -e CALENDAR_URL="https://calendar.google.com/calendar/ical/YOUR_EMAIL/public/basic.ics" cal-filter
+
+# Run with custom port
+docker run -p 3000:3000 -e PORT=3000 cal-filter
 ```
 
 ## Example Use Case
